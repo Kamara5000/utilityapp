@@ -74,16 +74,15 @@ console.log(contacts);
                         key={i}
                         onClick={() => handleSelectedContact(c)}
                     >
-                    <figure>
+                  
                         <img alt="img" className="w-32 h-32 rounded-full mx-auto"  src={c.picture.large}/>
                         <figcaption className="text-center mt-5">
                         <p className="text-gray-700 font-semibold text-xl mb-2">{c.name.first} {c.name.last}</p>
-                        <p className="text-gray-500 "><span className="font-medium">email:</span>{c.email}</p>
+                        <p className="text-gray-500 "><span className="font-medium">email:</span><span className="font-medium text-sm">{c.email}</span></p>
                         <p className="text-gray-500"><span className="font-medium">phone:</span> {c.cell}</p>
                         <p className="text-gray-500"><span className="font-medium">city:</span> {c.location.city}</p>
+                        
                         </figcaption>
-    
-                    </figure>
                     </motion.button>
                 )):<div className="text-red-400">no contact available</div>
             }

@@ -45,10 +45,10 @@ const ContactModal = ({ contact, setSelectedContact }) => {
   )
 }
 const style = {
-  overlay: 'fixed top-0 h-screen w-screen bg-black bg-opacity-10',
+  overlay: 'fixed top-0  h-screen w-screen bg-black bg-opacity-10',
   container: 'flex h-screen',
-  modal: 'm-auto bg-white rounded-lg shadow-lg px-14 pt-5 pb-10',
+  modal: 'm-auto bg-white  rounded-lg shadow-lg px-14 pt-5 pb-10',
   title: 'text-center mb-5 text-gray-700 font-semibold text-xl',
-  content: 'grid grid-cols-2 text-gray-600 gap-x-0'
+  content: 'grid md:grid-cols-2  text-gray-600 gap-x-0'
 }
 export default ContactModal
