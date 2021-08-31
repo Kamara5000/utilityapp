@@ -1,6 +1,5 @@
 import React from 'react';
 import Contacts from './contact';
-import SearchContacts from './searchcontact';
 
 const Allcontact = ()=>{
     return(

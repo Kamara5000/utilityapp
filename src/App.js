@@ -1,10 +1,11 @@
 import {BrowserRouter, Route, Switch} from "react-router-dom";
-import Allcontact from './contact/allcontact';
-import Contact from './contact/contact';
-import Home from "./home";
-import Notexist from "./notexist";
-import Reg from "./register";
-import Log from "./signIn";
+import Allcontact from './components/contact/allcontact';
+import Contact from './components/contact/contact';
+import Home from "./components/home";
+import Notexist from "./components/notexist";
+import Reg from "./components/registerlogin/register"
+import Log from "./components/registerlogin/signIn";
+import Welcome from "./components/welcome";
 
 const App=()=> {
   return (
@@ -12,8 +13,8 @@ const App=()=> {
       <div>     
         <BrowserRouter>
         <Switch>
-        <Route exact path="/" component={Home}/>
-        <Route exact path="/contact" component={Contact}/>
+        <Route exact path="/" component={Welcome}/>
+        <Route exact path="/contact" component={Allcontact}/>
         <Route path="/signup" component={Reg} />
         <Route path="/login" component={Log} />
         <Route path="/home" component={Home}/>

@@ -3,18 +3,21 @@ import axios from  'axios';
 import { AnimatePresence } from 'framer-motion';
 import {motion} from 'framer-motion';
 import ContactModal from './contactmodal';
+import Header from '../header';
+import Footer from '../footer';
 
 const Contacts = ()=>{
 const [contacts, handleContacts] = useState(null);
 const [filter, handleFilter] = useState(null);
-const [filterered, handleFilterered] = useState(null);
 const [selectedContact, handleSelectedContact] = useState(null);
 const [isLoad, handleLoading] = useState(true);
 
+
 useEffect(()=>{
+
     if (filter) {
         handleLoading(true);
-        axios.get('https://randomuser.me/api?results=50').then(res=>{
+        axios.get('https://randomuser.me/api?results=10').then(res=>{
             console.log(res);
             const query = filter.toLowerCase();
             const filtered = res.data.results.filter(contact=>{
@@ -33,7 +36,7 @@ useEffect(()=>{
             console.log(err);
         })
     } else {
-            axios.get('https://randomuser.me/api?results=200').then(res=>{
+            axios.get('https://randomuser.me/api?results=10').then(res=>{
             console.log(res);
             handleContacts(res.data.results);
             handleLoading(false);
@@ -49,17 +52,20 @@ console.log(contacts);
     return(
         <React.Fragment>
             <section>
+                <Header/>
+            </section>
+            <section>
             <form>
                <input placeholder="find a contact" type="text" className="ml-20 mt-10 rounded-md p-2"
                 onChange={event => handleFilter(event.target.value)}/>
            </form>
            <div className="mt-2 self-center font-semibold text-xl text-gray-900 text-center">
-               {contacts? contacts.length > 0 ? <h>{contacts.length} results</h>:'':'' }   
+               {contacts? contacts.length > 0 ? <h1>{contacts.length} results</h1>:'':'' }   
             </div>
            
             </section>
             
-            <section className="grid md:grid-cols-4 sm:grid-cols-2 gap-6 p-10 md:p-20 lg:p-20">
+            <section className="grid md:grid-cols-4 sm:grid-cols-2  gap-6 p-10 md:p-20 lg:p-20">
             {isLoad?<h1>Fetching data...</h1>:
                 contacts?contacts.map((c,i)=>(
                     <motion.button
@@ -99,7 +105,9 @@ console.log(contacts);
              />
             }
             </AnimatePresence>
-            
+            <section className="bg-white">
+                <Footer/>
+            </section>
             
         </React.Fragment>
     )

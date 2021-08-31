@@ -1,7 +1,7 @@
 
 import { Link } from 'react-router-dom';
 
-const Home=()=>{
+const Welcome=()=>{
     
     return (
           <div className="p-10 mt-10">
@@ -44,4 +44,4 @@ const Home=()=>{
           </div>
       )
 }
-export default Home;
+export default Welcome;

@@ -1,8 +1,55 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import {Link,useHistory} from 'react-router-dom';
 
 const Log=(props)=>{
+  let [mail, setMail] = useState(null);
+  let [pass, setPass]= useState(null);
+  let [password, handlePassword] = useState('password');
+  let [show, handleShow] =useState(false);
+  let [eye, handleEye] = useState('fa fa-eye');
+
+  const history =useHistory();
+    
+    const handleSet=(event)=>{
+            let checkMail= event.target.name==="email";
+            let checkPass = event.target.name ==="password";
+           
+             if (checkMail) {
+                setMail(event.target.value);
+            }else if(checkPass){
+                setPass(event.target.value);
+            }
+        }
+
+  const handleLog = (e)=>{
+    e.preventDefault();
+    let m= {username:mail,  password:pass};
+    console.log(m)
+    axios.post('http://localhost:5000/login',m)
+    .then(response=>{//console.log(response.data);
+      let {token, message} = response.data;
+      console.log(message, token);
+      localStorage.setItem('token', token); 
+      history.push('/contact');
+      }
+    ).catch(err=>{
+      console.log(err)
+      //history.push('/login');
+    });
+   
+  }
+  
+  const setVisible = ()=>{
+    handleShow(!show)
+    if(show){
+      handlePassword('text');
+      handleEye('fa fa-eye-slash')
+    }if(!show){
+      handlePassword('password');
+      handleEye('fa fa-eye')
+    }
+  }
     
     return (         
           <div className="p-10 mt-10">
@@ -18,7 +65,7 @@ const Log=(props)=>{
               It's simple and easy
             </p>
             
-            <form className="form mt-14">
+            <form onSubmit={handleLog} className="fom mt-14">
               <div className="flex justify-center">
                 <div className="lg:w-1/3 md:w-2/3 w-full">
                   <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="email">
@@ -27,6 +74,7 @@ const Log=(props)=>{
                   <input type="email" name="email" id="email" placeholder="example@gmail.com"  required
                     className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full 
                       py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-teal-500"
+                      onChange={handleSet}
                   />
                 </div>
               </div>
@@ -36,10 +84,12 @@ const Log=(props)=>{
                   <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="password">
                     Password
                   </label>
-                  <input  type="password" name="password" id="password" placeholder="*********"  required
+                  <input  type={password} name="password" id="password" placeholder="*********"  required
                     className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full 
                       py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-teal-500"
+                      onChange={handleSet}
                   />
+                  <button type="button" onClick={setVisible}><span className={eye}></span></button>
                 </div>
               </div>
               <div className="mt-4 flex justify-center">
