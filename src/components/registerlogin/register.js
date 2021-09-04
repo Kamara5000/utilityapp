@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-import {motion} from 'framer-motion';
 import RegisterModal from './registerModal';
 import {useHistory } from  'react-router-dom';
 
@@ -15,9 +14,9 @@ const Reg=(props)=>{
     let [password, handlePassword] = useState('password');
     let [show, handleShow] =useState(false);
     let [eye, handleEye] = useState('fa fa-eye');
+    let [exist, handleExist] = useState(false);
         
        const handleSet=(event)=>{
-            //let checkName= event.target.name==="userName";
             let checkMail= event.target.name==="email";
             let checkPass = event.target.name ==="password";
            
@@ -32,9 +31,6 @@ const Reg=(props)=>{
            e.preventDefault();
             let m= {email:mail,  password:pass};
               console.log(m)
-            
-            if(mail && pass){
-                //axios.post('http://localhost:5000',JSON.stringify(m))
                         axios({
                                 method: "post",
                                 url: "http://localhost:5000/register",
@@ -45,32 +41,18 @@ const Reg=(props)=>{
                              })
         
                         .then(response=>{console.log(response.data); 
-                            changeReg(!reg)
-                            //document.getElementsByTagName("email").
+                            if (response.data.message === "success") {
+                              changeReg(!reg)
+                            }
+                            
+                            if (response.data.message === "user exist") {
+                              handleExist(true)
+                            }
                             
                          }).catch(err=>console.log(err));
-    
-            }else{
-                console.log('please fill all require field')
-            }
         };
 
-    const handleLog = ()=>{
-      let m= {email:mail,  password:pass};
-      console.log(m)
-      axios.post('http://localhost:5000/login',m)
-      .then(response=>{//console.log(response.data);
-        let {token, message} = response.data;
-        console.log(message, token);
-        localStorage.setItem('token', token); 
-        history.push('/contact');
-        }
-      ).catch(err=>{
-        console.log(err)
-        history.push('/login');
-      });
-     
-    }
+    
 
     const setVisible = ()=>{
       handleShow(!show)
@@ -87,7 +69,7 @@ const Reg=(props)=>{
     
     return (
       <React.Fragment>
-            <div className="p-10 mt-10">
+          <div className="p-10 mt-10">
             <h2 className="text-center text-3xl leading-9 font-extrabold text-gray-800">
               Create your account
             </h2>
@@ -124,8 +106,10 @@ const Reg=(props)=>{
                       onChange={handleSet}
                   />
                   <button type="button" onClick={setVisible}><span className={eye}></span></button>
+                  {exist && <p className="text-sm text-red-400 ">user with this email already exist</p>}
                 </div>
               </div>
+              
               
               <div className="mt-4 flex justify-center">
                 <button type="submit"
@@ -142,7 +126,7 @@ const Reg=(props)=>{
 
           <AnimatePresence>
           {reg &&
-          <RegisterModal email={mail} password={pass} changeReg={changeReg} handleLog={handleLog}/>
+          <RegisterModal changeReg={changeReg} />
           }
           </AnimatePresence>
       </React.Fragment>

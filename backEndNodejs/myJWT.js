@@ -15,9 +15,10 @@ const myJwtMdw = (req, res, next)=>{
         if(err){
            
          //    res.statusCode
-            res.json({error: "something is wrong"})
+            res.json({error: "jwt expired"})
         } else{
-        req.body=user;   
+        
+        //console.log(req.body)  
         next();
         }
      })

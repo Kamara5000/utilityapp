@@ -5,23 +5,47 @@ import {motion} from 'framer-motion';
 import ContactModal from './contactmodal';
 import Header from '../header';
 import Footer from '../footer';
+import AddContactModal from './addcontactmodal';
+import {useHistory} from 'react-router-dom';
+import { useParams } from 'react-router';
 
 const Contacts = ()=>{
-const [contacts, handleContacts] = useState(null);
-const [filter, handleFilter] = useState(null);
-const [selectedContact, handleSelectedContact] = useState(null);
-const [isLoad, handleLoading] = useState(true);
+let [contacts, handleContacts] = useState(null);
+let [filter, handleFilter] = useState(null);
+let [selectedContact, handleSelectedContact] = useState(null);
+let [isLoad, handleLoading] = useState(true);
+let [addcontact, handleAddContact] = useState(false);
+let [error, handleError] = useState(false);
+let [filtered ,handleFiltered] = useState(null);
+
+
+const history =useHistory();
+const { username } = useParams();
+
+//console.log(username);
 
 
 useEffect(()=>{
+    
+    let isMounted = true;
+    //loading from backend
 
+    //filter for the search input if search or load all contacts if no search
     if (filter) {
         handleLoading(true);
-        axios.get('https://randomuser.me/api?results=10').then(res=>{
+        axios({
+                    method: "get",
+                    url: `http://localhost:5000/contact/${username}`,
+                    headers: { 
+                    'authorization': `Bearer ${localStorage.getItem('token')}`
+                     }, 
+                 })
+            
+            .then(res=>{
             console.log(res);
             const query = filter.toLowerCase();
-            const filtered = res.data.results.filter(contact=>{
-            const fullName = `${contact.name.first} ${contact.name.last}`;
+            const filteredContact = res.data.filter(contact=>{
+            const fullName = `${contact.name}`;
             if(query.length === 1){
                 const firstLetter = fullName.charAt(0).toLowerCase();
                 return firstLetter === query
@@ -30,44 +54,105 @@ useEffect(()=>{
              }
         })
 
-            handleContacts(filtered);
+           if (isMounted) {
             handleLoading(false);
+            handleFiltered(filteredContact);
+            handleContacts(filteredContact)
+           }
+            
+        
+            
             }).catch(err=>{
-            console.log(err);
-        })
+                console.log(err);})
     } else {
-            axios.get('https://randomuser.me/api?results=10').then(res=>{
+            axios({
+                        method: "get",
+                        url: `http://localhost:5000/contact/${username}`,
+                        headers: { 
+                        'authorization': `Bearer ${localStorage.getItem('token')}`
+                         }, 
+                     })
+                
+                .then(res=>{
             console.log(res);
-            handleContacts(res.data.results);
-            handleLoading(false);
+            if(res.data.error === "jwt expired"){
+                history.push("/login");
+            }else{
+                if (isMounted) {
+                    handleContacts(res.data);
+                    handleLoading(false);
+                }
+                
+            }
+            
+            
             }).catch(err=>{
             console.log(err)})
         }
+    
+        //clean up
+        return () => isMounted = false
+       
 
+     //using randomuser api 
+    // if (filter) {
+    //     handleLoading(true);
+    //     axios.get('https://randomuser.me/api?results=10').then(res=>{
+    //         console.log(res);
+    //         const query = filter.toLowerCase();
+    //         const filtered = res.data.results.filter(contact=>{
+    //         const fullName = `${contact.name.first} ${contact.name.last}`;
+    //         if(query.length === 1){
+    //             const firstLetter = fullName.charAt(0).toLowerCase();
+    //             return firstLetter === query
+    //         }else{
+    //             return fullName.toLowerCase().includes(query);
+    //          }
+    //     })
 
-},[filter])
+    //         handleContacts(filtered);
+    //         handleLoading(false);
+    //         }).catch(err=>{
+    //         console.log(err);})
+    // } else {
+    //         axios.get('https://randomuser.me/api?results=10').then(res=>{
+    //         console.log(res);
+    //         handleContacts(res.data.results);
+    //         handleLoading(false);
+    //         }).catch(err=>{
+    //         console.log(err)})
+    //     }
+
+},[filter,addcontact,selectedContact]);
 
 console.log(contacts);
 
     return(
         <React.Fragment>
             <section>
-                <Header/>
+                <Header username={username}/>
             </section>
             <section>
-            <form>
-               <input placeholder="find a contact" type="text" className="ml-20 mt-10 rounded-md p-2"
-                onChange={event => handleFilter(event.target.value)}/>
-           </form>
-           <div className="mt-2 self-center font-semibold text-xl text-gray-900 text-center">
-               {contacts? contacts.length > 0 ? <h1>{contacts.length} results</h1>:'':'' }   
+            <div className="flex  justify-between flex-wrap">
+                <input placeholder="find a contact" type="text"  className="md:ml-20 ml-10 mt-32 rounded-md p-2"
+                    onChange={event => handleFilter(event.target.value)}
+                />
+                <motion.button onClick={()=>handleAddContact(true)} className="md:ml-20 ml-10  justify-end self-end font-semibold text-sm mr-20 px-4 py-2 leading-none border rounded bg-white  hover:border-transparent hover:text-teal mt-10  md:mt-10">
+                    Add Contact
+                </motion.button>
+                {addcontact && <AddContactModal handleAddContact={handleAddContact} username ={username}/>}
             </div>
            
-            </section>
-            
+           </section>
+           <div className="mt-2 flex-grow self-center font-semibold text-xl text-gray-900 text-center">
+            {contacts? contacts.length > 0 ? <h1>{contacts.length} contacts</h1>:'':'' }
+            </div>
+
+        
             <section className="grid md:grid-cols-4 sm:grid-cols-2  gap-6 p-10 md:p-20 lg:p-20">
-            {isLoad?<h1>Fetching data...</h1>:
-                contacts?contacts.map((c,i)=>(
+            {isLoad?<h1>Fetching data...</h1>:null}
+            {error?<h1 className="text-sm text-red-400">Error loading contacts refresh to try again</h1>:null}
+                {contacts && contacts.length>0?contacts.map((c,i)=>(
                     <motion.button
                     //to add transition to the cards
                         initial={{ opacity: 0 }}
@@ -81,18 +166,18 @@ console.log(contacts);
                         onClick={() => handleSelectedContact(c)}
                     >
                   
-                        <img alt="img" className="w-32 h-32 rounded-full mx-auto"  src={c.picture.large}/>
+                        <img alt="img" className="w-32 h-32 rounded-full mx-auto"  src={c.imgUrl}/>
                         <figcaption className="text-center mt-5">
-                        <p className="text-gray-700 font-semibold text-xl mb-2">{c.name.first} {c.name.last}</p>
+                        <p className="text-gray-700 font-semibold text-xl mb-2">{c.name}</p>
                         <p className="text-gray-500 "><span className="font-medium">email:</span><span className="font-medium text-sm">{c.email}</span></p>
-                        <p className="text-gray-500"><span className="font-medium">phone:</span> {c.cell}</p>
-                        <p className="text-gray-500"><span className="font-medium">city:</span> {c.location.city}</p>
+                        <p className="text-gray-500"><span className="font-medium">phone:</span> {c.phone}</p>
+                        <p className="text-gray-500"><span className="font-medium">city:</span> {c.address}</p>
                         
                         </figcaption>
                     </motion.button>
                 )):<div className="text-red-400">no contact available</div>
-            }
-            {contacts? contacts.length < 1 ? <h>can't find contact</h>:'':'' }
+                }
+            {filtered && filtered.length<1 && filter &&  <h1>can't find contact</h1>}
                 
             </section>
 

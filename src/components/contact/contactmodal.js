@@ -1,4 +1,7 @@
-import { motion } from 'framer-motion'
+import { motion,AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import DeleteContactModal from './deleteContactModal';
+import EditContactModal from './editContactModal';
 
 const ContactModal = ({ contact, setSelectedContact }) => {
   const closeModal = event => {
@@ -8,6 +11,11 @@ const ContactModal = ({ contact, setSelectedContact }) => {
       setSelectedContact(null)
     }
   }
+
+  let [delcontact, handledelcontact] = useState(false);
+
+  let [editcontact, handleEditContact] = useState(false);
+
 
    window.addEventListener('keydown', event => closeModal(event))
   return (
@@ -19,27 +27,44 @@ const ContactModal = ({ contact, setSelectedContact }) => {
           className={style.modal}
         >
           <p className={style.title}>
-            {contact.name.title} {contact.name.first} {contact.name.last}
+            {contact.name}
           </p>
           <div className={style.content}>
-            <p className="font-medium">Username:</p>
-            <p>{contact.login.username}</p>
-            <p className="font-medium">Gender:</p>
-            <p>{contact.gender}</p>
-            <p className="font-medium">City:</p>
-            <p>{contact.location.city}, {contact.location.state}</p>
-            <p className="font-medium">Country:</p>
-            <p>{contact.location.country}</p>
-            <p className="font-medium">Postcode:</p>
-            <p>{contact.location.postcode}</p>
+            <p className="font-medium">Address:</p>
+            <p>{contact.address}</p>
             <p className="font-medium">Phone Number:</p>
-            <p>{contact.cell}</p>
+            <p>{contact.phone}</p>
             <p className="font-medium">Email:</p>
             <p>{contact.email}</p>
-            <p className="font-medium">Age:</p>
-            <p>{contact.dob.age}</p>
+            <p>Twitter</p>
+            <p>{contact.twitter? contact.twitter:''}</p>
+            <p>instagram</p>
+            <p>{contact.instagram}</p>
           </div>
+            <div className="flex flex-wrap justify-center items-center mt-4 border-t-2 pt-5">
+                <button onClick={()=>handleEditContact(true)} className="text-xs mr-2 py-1.5 px-4 ransition animate-pulse text-gray-600 bg-blue-200 rounded-2xl">
+                    Edit
+                </button>
+                <button onClick={()=>handledelcontact(true)} className="text-xs mr-2 py-1.5 px-4 transition animate-bounce text-gray-600 bg-red-300 rounded-2xl">
+                    Delete
+                </button>
+            </div>
         </motion.div>
+        
+        <AnimatePresence>
+            {delcontact &&
+             <DeleteContactModal
+                selectedContact={contact}
+                setSelectedContact={handledelcontact}
+                mainModal = {setSelectedContact}
+             />
+            }
+        </AnimatePresence>
+        <AnimatePresence>
+          {editcontact && 
+          <EditContactModal contact ={contact} contactSelected={setSelectedContact} editContact={handleEditContact}/>}
+        </AnimatePresence>
+
       </div>
     </div>
   )

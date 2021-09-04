@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 const Footer= ()=>{
 
     const d = new Date();
-    let [year, setYear] = useState(d.getFullYear());
+    const year = d.getFullYear();
 
 
     return(
@@ -41,19 +41,19 @@ const Footer= ()=>{
             </div>
         </nav>
         <div className="flex justify-center mt-8 space-x-6">
-            <a href="https://www.facebook.com" target="_blank" className="text-gray-400 text-xl  hover:text-gray-500">
+            <a href="https://www.facebook.com" target="_blank" rel="noreferrer" className="text-gray-400 text-xl  hover:text-gray-500">
                 <span className="fab fa-facebook"></span>
                 
             </a>
-            <a href="https://www.instagram.com" target="_blank"  className="text-gray-400 text-xl  hover:text-gray-500">
+            <a href="https://www.instagram.com" target="_blank" rel="noreferrer" className="text-gray-400 text-xl  hover:text-gray-500">
                 <span className="fab fa-instagram"></span>
                 
             </a>
-            <a href="https://www.twitter.com" target="_blank"  className="text-gray-400 text-xl  hover:text-gray-500">
+            <a href="https://www.twitter.com" target="_blank" rel="noreferrer"  className="text-gray-400 text-xl  hover:text-gray-500">
                 <span className="fab fa-twitter"></span>
                 
             </a>
-            <a href="https://www.github.com" target="_blank"  className="text-gray-400 text-xl  hover:text-gray-500">
+            <a href="https://www.github.com" target="_blank"  rel="noreferrer" className="text-gray-400 text-xl  hover:text-gray-500">
                 <span className="fab fa-github"></span>
                 
             </a>

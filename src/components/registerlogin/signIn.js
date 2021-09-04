@@ -8,6 +8,7 @@ const Log=(props)=>{
   let [password, handlePassword] = useState('password');
   let [show, handleShow] =useState(false);
   let [eye, handleEye] = useState('fa fa-eye');
+  let [error, handleError] = useState(false);
 
   const history =useHistory();
     
@@ -28,14 +29,19 @@ const Log=(props)=>{
     console.log(m)
     axios.post('http://localhost:5000/login',m)
     .then(response=>{//console.log(response.data);
-      let {token, message} = response.data;
-      console.log(message, token);
+      let {token, message,username} = response.data;
+      console.log(message, token,username);
+    
+      if(message === "success"){
       localStorage.setItem('token', token); 
-      history.push('/contact');
-      }
-    ).catch(err=>{
-      console.log(err)
-      //history.push('/login');
+      history.push(`/contact/${username}`);
+      
+      }else{
+        handleError(true)
+      }    
+    }).catch(err=>{
+      //console.log(err.status)
+      history.push('/login');
     });
    
   }
@@ -90,6 +96,7 @@ const Log=(props)=>{
                       onChange={handleSet}
                   />
                   <button type="button" onClick={setVisible}><span className={eye}></span></button>
+                  {error && <p className="text-sm text-red-400 ">Email or password incorrect</p>}
                 </div>
               </div>
               <div className="mt-4 flex justify-center">
