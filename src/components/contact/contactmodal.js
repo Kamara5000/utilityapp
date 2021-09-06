@@ -32,13 +32,13 @@ const ContactModal = ({ contact, setSelectedContact }) => {
           <div className={style.content}>
             <p className="font-medium">Address:</p>
             <p>{contact.address}</p>
-            <p className="font-medium">Phone Number:</p>
+            <p className="font-medium">Phone:</p>
             <p>{contact.phone}</p>
             <p className="font-medium">Email:</p>
             <p>{contact.email}</p>
-            <p>Twitter</p>
+            <p>Twitter:</p>
             <p>{contact.twitter? contact.twitter:''}</p>
-            <p>instagram</p>
+            <p>instagram:</p>
             <p>{contact.instagram}</p>
           </div>
             <div className="flex flex-wrap justify-center items-center mt-4 border-t-2 pt-5">
@@ -74,6 +74,6 @@ const style = {
   container: 'flex h-screen',
   modal: 'm-auto bg-white  rounded-lg shadow-lg px-14 pt-5 pb-10',
   title: 'text-center mb-5 text-gray-700 font-semibold text-xl',
-  content: 'grid md:grid-cols-2  text-gray-600 gap-x-0'
+  content: 'grid grid-cols-2 break-words text-gray-600 gap-x-0'
 }
 export default ContactModal

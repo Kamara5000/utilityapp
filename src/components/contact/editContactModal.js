@@ -18,7 +18,7 @@ const EditContactModal = ({contact, contactSelected, editContact}) => {
     const history =useHistory();
 
    const closem=()=>{
-        contactSelected(false);
+        editContact(false);
     }
 
   useEffect(()=>{

@@ -3,31 +3,31 @@ import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import { useState } from 'react';
 
-const DeleteContactModal = ({ selectedContact, setSelectedContact, mainModal }) => {
+const DeleteNoteModal = ({ selectedNote, setSelectedNote, mainModal }) => {
 
   let [success, setSuccess] = useState(false);
 
   const closeModal = event => {
-    if(event.keyCode === 27) setSelectedContact(false)
-    if (event.currentTarget === event.target) setSelectedContact(false)
+    if(event.keyCode === 27) setSelectedNote(false)
+    if (event.currentTarget === event.target) setSelectedNote(false)
     if(event.keyCode === 27 || event.currentTarget === event.target) {
-      setSelectedContact(false)
+      setSelectedNote(false)
     }
   }
 const history = useHistory();
 
   const no = ()=>{
-    setSelectedContact(false)
+    setSelectedNote(false)
   }
+  
   const yes = ()=>{
     
     //alert(selectedContact._id)
-      const {_id, imgPublicId} = selectedContact;
-      const m = {imgPublicId}
+    const {_id} = selectedNote;
+      console.log(_id)
                  axios({
                          method: "post",
-                         url: `http://localhost:5000/contact/delete/${_id}`,
-                         data:m,
+                         url: `http://localhost:5000/notes/delete/${_id}`,
                          headers: { 
                          'authorization': `Bearer ${localStorage.getItem('token')}`,
                          //'Content-Type': 'multipart/form-data'
@@ -61,9 +61,9 @@ const history = useHistory();
         >
           
           <div className={style.content}>
-            <p className="font-medium text-center">Are you sure you want to delete the contact ?</p>
+            <p className="font-medium">Are you sure you want to delete the note</p>
             <p className={style.title}>
-                {selectedContact.name}
+                {selectedNote.title}
             </p>
           </div>
             <div className="flex flex-wrap justify-center items-center mt-4 border-t-2 pt-5">
@@ -82,7 +82,7 @@ const history = useHistory();
         >
           
           <div className={style.content}>
-            <p className="font-medium text-green-500">Contact deleted succesfully!!!</p>
+            <p className="font-medium text-green-500">Note deleted succesfully!!!</p>
   
           </div>
             <div className="flex flex-wrap justify-center items-center mt-4 border-t-2 pt-5">
@@ -98,8 +98,8 @@ const history = useHistory();
 const style = {
   overlay: 'fixed top-0  h-screen w-screen bg-black bg-opacity-10',
   container: 'flex h-screen',
-  modal: 'm-auto bg-white  rounded-lg shadow-lg px-10 pt-5 pb-10',
+  modal: 'm-auto bg-white  rounded-lg shadow-lg px-14 pt-5 pb-10',
   title: 'text-center mb-5 text-gray-700 font-semibold text-xl',
-  content: 'grid md:grid-cols-1  text-gray-600 gap-x-0'
+  content: 'grid md:grid-cols-2  text-gray-600 gap-x-0'
 }
-export default DeleteContactModal
+export default DeleteNoteModal

@@ -10,7 +10,7 @@ const myJwtMdw = (req, res, next)=>{
      //console.log(tok)
      
      jwt.verify(tok, secret, (err, user)=>{
-     //console.log(user)
+     console.log(user)
  
         if(err){
            

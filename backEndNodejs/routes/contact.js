@@ -9,6 +9,11 @@ require('dotenv').config();
 const uri = process.env.url;
 mongoose.connect(uri,{useNewUrlParser:true, useUnifiedTopology: true });
 
+router.use((req,res,next)=>{
+    next();
+})
+
+
 router.get("/:username",myJwtMdw, (req,resp)=>{
     let {username} = req.params;
     //console.log(username)
@@ -51,18 +56,7 @@ router.post("/add/:username",upload.single('img'), myJwtMdw, async(req, resp)=>{
          pId = result.public_id;
         console.log(result);
      }
-
-   
-     // Create new user
-    // let user = new User({
-    //   name: req.body.name,
-    //   avatar: result.secure_url,
-    //   cloudinary_id: result.public_id,
-    // });
-
-   
-     
-    
+ 
      let {mail,name,phone,address,instagram,twitter,img} = req.body;
     let createdContact = await myContact.create({name:name, email:mail, phone:phone, address:address, instagram:instagram, twitter:twitter, imgUrl:path, imgPublicId:pId, user_username:username});        
     //console.log(createdContact);
@@ -78,8 +72,6 @@ router.post("/delete/:_id",upload.single('img'), myJwtMdw, async(req, resp)=>{
      let imgpath = imgPublicId.imgPublicId;
      //console.log(imgpath)
      
- 
-
     if (imgpath != "" ) {
         const result = await cloudinary.uploader.destroy(imgpath);
             console.log(result);
@@ -92,10 +84,6 @@ router.post("/delete/:_id",upload.single('img'), myJwtMdw, async(req, resp)=>{
                 console.log("done")      
                resp.json({message:"success"})
      }
-    
-    
-    
-
 })
 
 router.post("/edit/:_id",upload.single('img'), myJwtMdw, async(req, resp)=>{
@@ -125,9 +113,7 @@ router.post("/edit/:_id",upload.single('img'), myJwtMdw, async(req, resp)=>{
         myContact.findOneAndUpdate({_id:_id},{name:name, email:mail, phone:phone, address:address, instagram:instagram, twitter:twitter},  {useFindAndModify:false, new:true , runValidators:true}).then(res=>console.log("new updated" ,res));
      }
 
-
      resp.json({message:"success"})
-
 })
 
 module.exports = router;

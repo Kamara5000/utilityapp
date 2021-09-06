@@ -225,8 +225,8 @@ const AddContactModal = ({handleAddContact, username}) => {
 const style = {
   overlay: 'fixed top-0  h-screen w-screen bg-black bg-opacity-10',
   container: 'flex h-screen overflow-y-initial ',
-  modal: ' m-auto bg-white md:h-auto h-screen overflow-y-auto  rounded-lg shadow-lg px-14 pt-5 pb-10',
-  title: 'text-center text-3xl leading-9 font-extrabold text-gray-800',
+  modal: ' m-auto bg-white md:h-auto h-screen overflow-y-auto  rounded-lg shadow-lg px-5 mt-5  pt-5  pb-10',
+  title: 'text-center text-lg leading-9 font-extrabold text-gray-800',
   content: 'grid fom mt-4 w-full md:grid-cols-2    text-gray-600 gap-x-4',
   
 

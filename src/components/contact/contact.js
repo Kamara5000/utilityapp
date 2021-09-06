@@ -80,11 +80,13 @@ useEffect(()=>{
             }else{
                 if (isMounted) {
                     handleContacts(res.data);
-                    handleLoading(false);
                 }
                 
             }
             
+            if (isMounted) {
+                handleLoading(false);
+            }
             
             }).catch(err=>{
             console.log(err)})
@@ -150,7 +152,7 @@ console.log(contacts);
 
         
             <section className="grid md:grid-cols-4 sm:grid-cols-2  gap-6 p-10 md:p-20 lg:p-20">
-            {isLoad?<h1>Fetching data...</h1>:null}
+            {isLoad ?<h1>Fetching data...</h1>:null}
             {error?<h1 className="text-sm text-red-400">Error loading contacts refresh to try again</h1>:null}
                 {contacts && contacts.length>0?contacts.map((c,i)=>(
                     <motion.button
@@ -167,16 +169,18 @@ console.log(contacts);
                     >
                   
                         <img alt="img" className="w-32 h-32 rounded-full mx-auto"  src={c.imgUrl}/>
-                        <figcaption className="text-center mt-5">
+                        <figcaption className="text-center mt-5 break-words">
                         <p className="text-gray-700 font-semibold text-xl mb-2">{c.name}</p>
-                        <p className="text-gray-500 "><span className="font-medium">email:</span><span className="font-medium text-sm">{c.email}</span></p>
+                        <p className="text-gray-500 "><span className="font-medium">email:</span>{c.email}</p>
                         <p className="text-gray-500"><span className="font-medium">phone:</span> {c.phone}</p>
                         <p className="text-gray-500"><span className="font-medium">city:</span> {c.address}</p>
                         
+                        
                         </figcaption>
                     </motion.button>
-                )):<div className="text-red-400">no contact available</div>
+                )):null
                 }
+            {!isLoad && contacts.length<1 && <div className="text-red-400">no contact available</div>}
             {filtered && filtered.length<1 && filter &&  <h1>can't find contact</h1>}
                 
             </section>

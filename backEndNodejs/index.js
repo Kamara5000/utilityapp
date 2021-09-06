@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const contact = require('./routes/contact');
+const notes = require('./routes/note');
 const MyError = require('./errorFile');
 const {storage,cloudinary} = require('./mycloud');
 const cors = require('cors');
@@ -96,6 +97,7 @@ app.post("/login", passport.authenticate('local', {failureFlash: true, failureRe
  
 
 app.use('/contact', contact);
+app.use('/notes', notes);
 
 app.listen(5000, ()=>{
     console.log("runing on port 5000");
