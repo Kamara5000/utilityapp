@@ -6,8 +6,6 @@ import {useHistory} from 'react-router-dom';
 const AddNoteModal = ({handleAddNote, username}) => {
     let [title,setTitle] = useState("");
     let [body, setBody] = useState("");
-    let [date, setDate] = useState();
-
     let [success, setSuccess] = useState(false);
 
     const history =useHistory();

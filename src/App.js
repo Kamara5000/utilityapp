@@ -5,6 +5,7 @@ import Note from "./components/notes/note";
 import Notexist from "./components/notexist";
 import Reg from "./components/registerlogin/register"
 import Log from "./components/registerlogin/signIn";
+import Todo from "./components/todo/todo";
 import Welcome from "./components/welcome";
 
 const App=()=> {
@@ -16,6 +17,7 @@ const App=()=> {
         <Route exact path="/" component={Welcome}/>
         <Route path="/contact/:username" component={Allcontact}/>
         <Route path="/notes/:username" component={Note}/>
+        <Route path="/todo/:username" component={Todo}/>
         <Route path="/signup" component={Reg} />
         <Route path="/login" component={Log} />
         <Route path="/home" component={Home}/>

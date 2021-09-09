@@ -6,3 +6,7 @@
     transform: translateY(-10px);
     filter: drop-shadow();
 }
+
+.active{
+    color: #fff;
+}

@@ -99,13 +99,15 @@ const Reg=(props)=>{
                 <div className="lg:w-1/3 md:w-2/3 w-full">
                   <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="password">
                     Password
-                  </label>
-                  <input  type={password} name="password" id="password" placeholder="*********" required
-                    className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full 
+                  </label>  
+                  <div className="relative mb-2">
+                    <input  type={password} name="password" id="password" placeholder="*********" required
+                      className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full 
                       py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-teal-500"
                       onChange={handleSet}
-                  />
-                  <button type="button" onClick={setVisible}><span className={eye}></span></button>
+                    />
+                   <button type="button" className="block text-gray-400 absolute right-2 top-2" onClick={setVisible}><span className={eye}></span></button>
+                  </div>
                   {exist && <p className="text-sm text-red-400 ">user with this email already exist</p>}
                 </div>
               </div>

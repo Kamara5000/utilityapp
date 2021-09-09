@@ -53,7 +53,6 @@ const EditNoteModal = ({note, noteSelected, editNote}) => {
                          data: m,
                          headers: { 
                          'authorization': `Bearer ${localStorage.getItem('token')}`,
-                         //'Content-Type': 'multipart/form-data'
                           }, 
                       })
  
