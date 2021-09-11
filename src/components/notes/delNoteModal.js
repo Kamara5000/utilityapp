@@ -26,7 +26,7 @@ const history = useHistory();
     const {_id} = selectedNote;
       console.log(_id)
                  axios({
-                         method: "post",
+                         method: "delete",
                          url: `http://localhost:5000/notes/delete/${_id}`,
                          headers: { 
                          'authorization': `Bearer ${localStorage.getItem('token')}`,

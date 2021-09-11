@@ -110,7 +110,7 @@ const addtodoItem=()=>{
 const delTodo =(t)=>{
         let _id = t._id;
     axios({
-        method: "post",
+        method: "delete",
         url: `http://localhost:5000/todo/delete/${_id}`,
         headers: { 
         'authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -154,7 +154,7 @@ return(
                     <div>
                         
                     <motion.li
-                    to add transition to the cards
+                    //to add transition to the cards
                         initial={{ opacity: 0 }}
                         animate={{ opacity: [0, 1] }}
                         transition={{ duration: 0.5, delay:i/10}}

@@ -18,7 +18,7 @@ const EditContactModal = ({contact, contactSelected, editContact}) => {
     const history =useHistory();
 
    const closem=()=>{
-        editContact(false);
+        contactSelected(false);
     }
 
   useEffect(()=>{
@@ -78,7 +78,8 @@ const EditContactModal = ({contact, contactSelected, editContact}) => {
     //console.log(username);
     
 
-     //let m= {mail,name,phone,address,instagram,twitter,img, oldImgUrl:contact.imgUrl};
+    //  let d= {mail,name,phone,address,instagram,twitter,img, oldImgUrl:contact.imgUrl};
+    //  console.log(d);
     const m= new FormData();
     m.append('mail', mail);
     m.append('name', name);
@@ -87,11 +88,11 @@ const EditContactModal = ({contact, contactSelected, editContact}) => {
     m.append('instagram', instagram);
     m.append('twitter', twitter);
     m.append('img', img);
-    m.append('oldImgUrl', contact.imgUrl);
+    m.append('oldImgUrl', contact.imgPublicId);
     console.log(m)
        
                  axios({
-                         method: "post",
+                         method: "patch",
                          url: `http://localhost:5000/contact/edit/${id}`,
                          data: m,
                          headers: { 

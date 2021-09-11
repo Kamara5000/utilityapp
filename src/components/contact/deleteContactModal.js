@@ -25,7 +25,7 @@ const history = useHistory();
       const {_id, imgPublicId} = selectedContact;
       const m = {imgPublicId}
                  axios({
-                         method: "post",
+                         method: "delete",
                          url: `http://localhost:5000/contact/delete/${_id}`,
                          data:m,
                          headers: { 

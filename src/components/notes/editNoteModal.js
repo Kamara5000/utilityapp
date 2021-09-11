@@ -48,7 +48,7 @@ const EditNoteModal = ({note, noteSelected, editNote}) => {
     console.log(m)
        
                  axios({
-                         method: "post",
+                         method: "patch",
                          url: `http://localhost:5000/notes/edit/${id}`,
                          data: m,
                          headers: { 

@@ -49,7 +49,7 @@ router.post("/add/:username", myJwtMdw, async(req, resp)=>{
 
 })
 
-router.post("/delete/:_id", myJwtMdw, async(req, resp)=>{
+router.delete("/delete/:_id", myJwtMdw, async(req, resp)=>{
     let _id = req.params;
     let deleteTodo = await myTodo.deleteOne({_id:_id}); 
     console.log("done")      
